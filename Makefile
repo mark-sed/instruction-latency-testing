@@ -1,32 +1,10 @@
-define compile_asm64
-	nasm -g -f elf64 -F dwarf -o $(1).o $(1).asm
-	ld -e __main -o $(1) $(1).o
-	rm $(1).o
-endef
+SRCS = $(wildcard tests/*.asm)
 
-all_files=add inc test cmp
+PROGS = $(patsubst %.asm,%,$(SRCS))
 
-.PHONY: $(all_files)
+all: $(PROGS)
 
-ndef:
-	$(info "Call with instruction name")
-
-all: add inc test cmp
-
-add:
-	$(call compile_asm64, add)
-	
-inc:
-	$(call compile_asm64, inc)
-
-test:
-	$(call compile_asm64, test)
-	
-cmp:
-	$(call compile_asm64, cmp)
-	
-clean:
-	for i in $(all_files) ; do \
-		rm $$i; \
-	done
-
+%: %.asm
+	nasm -g -f elf64 -F dwarf -o $@.o $<
+	ld -e __main -o $@.out $@.o
+	rm $@.o
