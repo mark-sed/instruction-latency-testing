@@ -12,6 +12,7 @@ TEST100=".test100.txt"
 MAKE_ARGS=all
 OUT_PREF='* '
 OUT_SUF='\n'
+ONE_CORE='nice.sh'
 
 
 function info(){
@@ -56,7 +57,7 @@ do
     for _ in {1..100}
     do
         printf $i | sed "s/\.out/;/g" | sed "s/.*\///g"
-        (time ./$i) 2>&1 | grep -oh "[0-9]*,[0-9]*" | tr '\n' '; '
+        (time sh $ONE_CORE 1 ./$i) 2>&1 | grep -oh "[0-9]*,[0-9]*" | tr '\n' '; '
         echo ""
     done
 done > $TEST100
@@ -76,14 +77,14 @@ done
 info 'Removing created temporary files'
 rm $TEST100
 
-# Moving results into 
-info 'Moving results into result folder'
-mkdir -p $RES_DIR
-mv $OUTPUT_FILE $RES_DIR/"results"$(date +'%d_%m_%Y_%H_%M_%S')".txt"
-
 # Send file through email
 info 'Sending results though email'
 echo "" | mutt -s "[ILT] $(date +'%d/%m/%Y %H:%M:%S')" $EMAIL -a $OUTPUT_FILE
+
+# Moving results into results folder
+info 'Moving results into result folder'
+mkdir -p $RES_DIR
+mv $OUTPUT_FILE $RES_DIR/"results"$(date +'%d_%m_%Y_%H_%M_%S')".txt"
 
 info 'DONE!'
 
