@@ -1,7 +1,7 @@
 #/bin/sh
 
 # Automatic instruction latency tests for assembler instructions
-VERSION=1.0
+VERSION=1.1
 
 OUTPUT_FILE=results.txt
 RES_DIR=results
@@ -12,12 +12,19 @@ TEST100=".test100.txt"
 MAKE_ARGS=all
 OUT_PREF='* '
 OUT_SUF='\n'
-ONE_CORE='nice.sh'
+ONE_CORE='one_core.sh'
+TIME_FC=time.sh
 
 
 function info(){
     echo -ne "$OUT_PREF"$1"$OUT_SUF"
 }
+
+# Check if sudo
+if [[ $EUID -ne 0 ]]; then
+   echo "This script must be run as root" 
+   exit 1
+fi
 
 # Printing output
 echo 'Instruction latency tests:'
@@ -35,9 +42,9 @@ echo "%PROCESSOR:" >> $OUTPUT_FILE
 cat /proc/cpuinfo >> $OUTPUT_FILE
 
 # Print the disk into to the output file
-info 'Getting hard disk information'
-echo "%DISKS:" >> $OUTPUT_FILE
-lsblk -o NAME,ROTA >> $OUTPUT_FILE
+#info 'Getting hard disk information'
+#echo "%DISKS:" >> $OUTPUT_FILE
+#lsblk -o NAME,ROTA >> $OUTPUT_FILE
 
 # Change directory (in case the wkdir is somewhere else than the tests)
 info 'Navigating into correct directory'
@@ -57,7 +64,7 @@ do
     for _ in {1..100}
     do
         printf $i | sed "s/\.out/;/g" | sed "s/.*\///g"
-        (time sh $ONE_CORE 1 ./$i) 2>&1 | grep -oh "[0-9]*,[0-9]*" | tr '\n' '; '
+        (sh $ONE_CORE 1 sh $TIME_FC $i) 2>&1 | grep -oh "[0-9]*,[0-9]*" | tr '\n' '; '
         echo ""
     done
 done > $TEST100
