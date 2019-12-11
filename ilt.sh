@@ -83,6 +83,7 @@ mv $OUTPUT_FILE $RES_DIR/"results"$(date +'%d_%m_%Y_%H_%M_%S')".txt"
 
 # Send file through email
 info 'Sending results though email'
-#echo "" | mutt -s "[ILT] $(date +'%d/%m/%Y %H:%M:%S')" $EMAIL -a $OUTPUT_FILE
+echo "" | mutt -s "[ILT] $(date +'%d/%m/%Y %H:%M:%S')" $EMAIL -a $OUTPUT_FILE
 
 info 'DONE!'
+
