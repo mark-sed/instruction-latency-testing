@@ -33,19 +33,19 @@ for i in range(len(tests)):
     mod.append([tests[i][0][0], mode(i_real), mode(i_user), mode(i_sys), mode(i_my)])
 
 
-print("%AVERAGES:")
+print("#AVERAGES:")
 for i in avrgs:
     for a in i:
         print(str(a)+",", end="")
     print()
 
-print("%MEDIANS:")
+print("#MEDIANS:")
 for i in med:
     for a in i:
         print(str(a)+',',end="")
     print()
 
-print("%MODES:")
+print("#MODES:")
 for i in mod:
     for a in i:
         print(str(a)+',',end="")

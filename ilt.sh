@@ -24,13 +24,17 @@ echo 'Instruction latency tests:'
 # Adding information such as date and test version
 echo "INSTRUCTION LATENCY TESTS" > $OUTPUT_FILE
 echo "^^^^^^^^^^^^^^^^^^^^^^^^^" >> $OUTPUT_FILE
-echo "%DATE: $(date +'%d/%m/%Y %H:%M:%S')" >> $OUTPUT_FILE
-echo "%VERSION: $VERSION" >> $OUTPUT_FILE
+echo "#DATE: $(date +'%d/%m/%Y %H:%M:%S')" >> $OUTPUT_FILE
+echo "#VERSION: $VERSION" >> $OUTPUT_FILE
 
 # Print the processor info to the output file
 info 'Getting processor information'
-echo "%PROCESSOR:" >> $OUTPUT_FILE
+echo "#PROCESSOR:" >> $OUTPUT_FILE
 cat /proc/cpuinfo >> $OUTPUT_FILE
+
+# Print assembler config info
+echo "#SETTINGS:" >> $OUTPUT_FILE
+cat conf.inc >> $OUTPUT_FILE
 
 # Print the disk into to the output file
 #info 'Getting hard disk information'
@@ -47,11 +51,21 @@ if [[ -z "$DEBUG" ]]; then
 	make $MAKE_ARGS
 fi
 
+# Get binary file size
+info 'Getting sizes of compiled binaries'
+echo "#BINARY SIZES:" >> $OUTPUT_FILE
+for i in $(ls $SRC_DIR/*.out)
+do
+    printf $i | sed "s/\.out/;/g" | sed "s/.*\///g"
+    stat --printf="%s" $i
+    echo ""
+done >> $OUTPUT_FILE
+
 # Run each binary and time it's processing time
 # Save to file test100.txt and then process in python
-# format: "ins,real,user,sys"
+# format: "ins,real,user,sys
 
-info 'Running latency tests'
+info 'Running latency tests (this will take a few minutes)'
 for i in $(ls $SRC_DIR/*.out)
 do
     for _ in {1..100}

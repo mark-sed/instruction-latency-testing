@@ -1,0 +1,1 @@
+- Soubory s reg2 zabiraji lehce vic uz jen kvuli elf formatu co obsahuje jmeno souboru

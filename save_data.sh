@@ -16,6 +16,10 @@ mkdir -p $RES_DIR
 mv $OUTPUT_FILE $MV_FILE
 
 # Sending result file throught email
-info 'Sending results though email'
-echo "" | mutt -s "[ILT] $TIME_NOW" $EMAIL -a $MV_FILE
+if [[ -z "$DEBUG" ]]; then
+	info 'Sending results though email'
+	echo "" | mutt -s "[ILT] $TIME_NOW" $EMAIL -a $MV_FILE
+fi
+
 info "DONE!"
+

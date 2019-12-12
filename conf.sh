@@ -5,7 +5,7 @@
 # @Author Marek Sedlacek
 
 #DEBUG=1 # Uncomment or comment if running in debug mode (no mail sending, no making, just tests) 
-VERSION=1.3
+VERSION=1.4
 
 OUTPUT_FILE=results.txt
 RES_DIR=results
