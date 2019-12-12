@@ -1,29 +1,20 @@
-#/bin/sh
+#!/bin/sh
 
 # Automatic instruction latency tests for assembler instructions
-VERSION=1.1
+# Made for my bachelor's thesis
+# @Author Marek Sedlacek
 
-OUTPUT_FILE=results.txt
-RES_DIR=results
-EMAIL="mr.mareksedlacek@gmail.com"
-WKD="."
-SRC_DIR="tests"
-TEST100=".test100.txt"
-MAKE_ARGS=all
-OUT_PREF='* '
-OUT_SUF='\n'
-ONE_CORE='one_core.sh'
-TIME_FC=time.sh
-
-
-function info(){
-    echo -ne "$OUT_PREF"$1"$OUT_SUF"
-}
+# Import constants
+source ./conf.sh
 
 # Check if sudo
 if [[ $EUID -ne 0 ]]; then
    echo "This script must be run as root" 
    exit 1
+fi
+
+if ! [[ -z "$DEBUG" ]]; then
+	echo "DEBUG IS ON!"
 fi
 
 # Printing output
@@ -51,20 +42,22 @@ info 'Navigating into correct directory'
 cd $WKD
 
 # Compile all .asm files into .out files
-info 'Compiling source codes (this will take a few minutes)'
-make $MAKE_ARGS
+if [[ -z "$DEBUG" ]]; then
+	info 'Compiling source codes (this will take a few minutes)'
+	make $MAKE_ARGS
+fi
 
 # Run each binary and time it's processing time
 # Save to file test100.txt and then process in python
 # format: "ins,real,user,sys"
 
-info 'Starting latency tests'
+info 'Running latency tests'
 for i in $(ls $SRC_DIR/*.out)
 do
     for _ in {1..100}
     do
         printf $i | sed "s/\.out/;/g" | sed "s/.*\///g"
-        (sh $ONE_CORE 1 sh $TIME_FC $i) 2>&1 | grep -oh "[0-9]*,[0-9]*" | tr '\n' '; '
+        (sh $ONE_CORE $CORE_NUM sh $TIME_FC $i) 2>&1 | grep -oh "[0-9]*,[0-9]*" | tr '\n' '; '
         echo ""
     done
 done > $TEST100
@@ -73,25 +66,17 @@ done > $TEST100
 info 'Calculating statistics'
 python3 stats.py >> $OUTPUT_FILE
 
+
 # Remove created .out files
-info 'Removing all created binary files'
-for i in $(ls $SRC_DIR/*.out)
-do
-    rm $i
-done
+if [[ -z "$DEBUG" ]]; then
+	info 'Removing all created binary files'
+	for i in $(ls $SRC_DIR/*.out)
+	do
+		rm $i
+	done
+fi
 
 # Remove creted txt files
 info 'Removing created temporary files'
 rm $TEST100
-
-# Send file through email
-info 'Sending results though email'
-echo "" | mutt -s "[ILT] $(date +'%d/%m/%Y %H:%M:%S')" $EMAIL -a $OUTPUT_FILE
-
-# Moving results into results folder
-info 'Moving results into result folder'
-mkdir -p $RES_DIR
-mv $OUTPUT_FILE $RES_DIR/"results"$(date +'%d_%m_%Y_%H_%M_%S')".txt"
-
-info 'DONE!'
 

@@ -22,13 +22,15 @@ for i in range(len(tests)):
     i_real = []
     i_user = []
     i_sys = []
+    i_my = []
     for a in range(len(tests[i])):
         i_real.append(float(tests[i][a][1].replace(',', '.')))
         i_user.append(float(tests[i][a][2].replace(',', '.')))
         i_sys.append(float(tests[i][a][3].replace(',', '.')))
-    avrgs.append([tests[i][0][0], mean(i_real), mean(i_user), mean(i_sys)])
-    med.append([tests[i][0][0], median(i_real), median(i_user), median(i_sys)])
-    mod.append([tests[i][0][0], mode(i_real), mode(i_user), mode(i_sys)])
+        i_my.append(float(tests[i][a][4].replace(',', '.')))
+    avrgs.append([tests[i][0][0], mean(i_real), mean(i_user), mean(i_sys), mean(i_my)])
+    med.append([tests[i][0][0], median(i_real), median(i_user), median(i_sys), median(i_my)])
+    mod.append([tests[i][0][0], mode(i_real), mode(i_user), mode(i_sys), mode(i_my)])
 
 
 print("%AVERAGES:")

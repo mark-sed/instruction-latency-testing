@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Source - http://www.hydrogen18.com/blog/howto-give-a-single-process-its-own-cpu-core-in-linux.html
+
 # Script to launch a process at maximum priority
 # on a single specified cpu
 # usage:
@@ -9,7 +10,7 @@ set -e
 
 cpu_count=$(grep processor /proc/cpuinfo | wc -l)
 processor=$1
-process_mask=$((1 << ${processor?}))
+process_mask=$((1 << ${processor?})) 
 all_cpus=$((2 ** ${cpu_count?} -1))
 irq_mask=$((${all_cpus?} ^ ${process_mask?}))
 

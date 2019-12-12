@@ -1,3 +1,6 @@
+# Makefile for making all assembler sourcfiles
+# @Author Marek Sedlacek
+
 SRCS = $(wildcard tests/*.asm)
 
 PROGS = $(patsubst %.asm,%,$(SRCS))
