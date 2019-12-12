@@ -1,29 +1,27 @@
-INSTRUCTION LATENCY TESTING:
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# INSTRUCTION LATENCY TESTING:
+
 This program does assembler instructions latency testing and
 sends results to my email.
 
 The script saves only processor information and statistics
 from testing.
 
-HOW TO RUN:
-^^^^^^^^^^^
+# HOW TO RUN:
+
 Program can be run by just executing "sh run.sh".
 Program SHOULD NOT be run as root, the scripts requests for
 root priveleges on it's own.
 
-REQUIREMENTS:
-^^^^^^^^^^^^^
-* Python 3.4
-* mutt
-* nasm
-* ld
+# REQUIREMENTS:
 
-Shell commands:
-* awk
-* bc
-* time
-* grep
-* tr
-* sed
+- Python 3.4
+- mutt
+- nasm
+- ld
+- awk
+- bc
+- time
+- grep
+- tr
+- sed
 
