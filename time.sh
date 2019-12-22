@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Timing script for Automatic instruction latency tests
 # Runs time script and then times the run time using timestamps

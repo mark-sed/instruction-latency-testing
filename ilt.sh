@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Automatic instruction latency tests for assembler instructions
 # Made for my bachelor's thesis

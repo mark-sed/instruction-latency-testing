@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Part of Instruction latency tests
 # Sends results through email and saves them into results folder
